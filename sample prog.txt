@@ -1,0 +1,54 @@
+IDENTIFICATION DIVISION.                                         
+       PROGRAM-ID. DAY31.                                               
+       DATA DIVISION.                                                   
+       WORKING-STORAGE SECTION.                                         
+       01 WS-NUM1          PIC 9(03).                                   
+       01 WS-NUM2          PIC 9(03).                                   
+       01 WS-OPER          PIC X.                                       
+       01 WS-RESU          PIC +9(03).                                  
+       PROCEDURE DIVISION.                                              
+       0000-MAIN-PARA.                                                  
+            PERFORM 1000-ACCEPT-PARA.                                   
+            PERFORM 2000-COMPUTE-PARA.                                  
+            PERFORM 3000-DISPLAY-PARA.                                  
+            STOP RUN.                                                   
+       1000-ACCEPT-PARA.                                                
+            ACCEPT WS-NUM1.                                             
+            ACCEPT WS-NUM2.                                             
+            ACCEPT WS-OPER.                                             
+       2000-COMPUTE-PARA.                                               
+            EVALUATE WS-OPER                                            
+                     WHEN '+'    PERFORM 2100-ADD-PARA                  
+                     WHEN '-'    PERFORM 2200-SUB-PARA                  
+                     WHEN '*'    PERFORM 2300-MUL-PARA                  
+                     WHEN '/'    PERFORM 2400-DIV-PARA                  
+                     WHEN OTHER  PERFORM 2500-WRONG-OPER-PARA           
+            END-EVALUATE.                                               
+       2100-ADD-PARA.                                                   
+            ADD WS-NUM1 TO WS-NUM2 GIVING ws-r                       
+                ON SIZE ERROR PERFORM 2110-ERROR-PARA.                  
+       2110-ERROR-PARA.                                                 
+            DISPLAY 'ERROR IN ADDITION'.                                
+            STOP RUN.                                                   
+       2200-SUB-PARA.                                                   
+            COMPUTE WS-RESU = WS-NUM2 - WS-NUM1                         
+                ON SIZE ERROR PERFORM 2210-ERROR-PARA.                  
+       2210-ERROR-PARA.                                                 
+            DISPLAY 'ERROR IN SUBTRACTION'.                             
+            STOP RUN.                                                   
+       2300-MUL-PARA.                                                   
+            COMPUTE WS-RESU = WS-NUM2 * WS-NUM1                         
+                ON SIZE ERROR PERFORM 2310-ERROR-PARA.                  
+       2310-ERROR-PARA.                                                 
+            DISPLAY 'ERROR IN MULTIPLICATION'.                          
+            STOP RUN.                                                   
+       2400-DIV-PARA.                                                   
+            DIVIDE WS-NUM1 BY WS-NUM2 GIVING WS-RESU                    
+                ON SIZE ERROR PERFORM 2410-ERROR-PARA.                  
+       2410-ERROR-PARA.                                                 
+            DISPLAY 'ERROR IN DIVISION'.                                
+            STOP RUN.                                                   
+       3000-DISPLAY-PARA.                                               
+            DISPLAY WS-NUM1 '  '  WS-NUM2 ' = ' WS-RESU.                
+       2500-WRONG-OPER-PARA.                                            
+            DISPLAY 'INVALID OPERATOR'.   
